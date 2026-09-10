@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rivals Tournament Director — run the whole show</title>
+<meta name="description" content="Desktop command center for Marvel Rivals tournament organizers. Brackets, check-in, live match control, broadcast and results on one screen, beside the game.">
+<link rel="canonical" href="https://rivalstd.vercel.app/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rivals Tournament Director — run the whole show">
+<meta property="og:description" content="Run your tournament from one screen instead of six tabs. Desktop app, local-first, one-time purchase.">
+<meta property="og:url" content="https://rivalstd.vercel.app/">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,400..900;1,75..125,400..900&display=swap" rel="stylesheet">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23C6F24E'/%3E%3Ctext x='16' y='23' font-family='Arial Black,Arial' font-size='19' font-weight='900' text-anchor='middle' fill='%230E0E0E'%3ER%3C/text%3E%3C/svg%3E">
+
+<style>
+/* ------------------------------------------------------------------
+   RTD landing page.
+
+   The palette and type treatment are RTD's own, reconstructed from the
+   live site: warm paper ground, near-black ink, coral for the thing the
+   eye should land on, and the app's signal lime used sparingly. This is
+   NOT the GrowTrackr design system -- that one is green/navy and belongs
+   to a different product.
+   ------------------------------------------------------------------ */
+:root{
+  --paper:#F3F0E9;
+  --paper-2:#EBE7DD;
+  --ink:#0E0E0E;
+  --ink-2:#3A3A38;
+  --muted:#63605A;
+  --rule:#D8D3C6;
+  --coral:#FF5A45;
+  --lime:#C6F24E;
+  --shell:#0E141C;
+  --shell-2:#161F2A;
+  --shell-rule:#26323F;
+  --shell-ink:#E9EEF4;
+  --shell-muted:#8796A7;
+
+  --sans:'Archivo',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
+
+  --measure:64ch;
+  --gutter:clamp(1.15rem,4vw,3.5rem);
+  --maxw:1280px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:5.5rem}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gutter)}
+
+a{color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible{
+  outline:3px solid var(--coral);outline-offset:3px;border-radius:2px;
+}
+
+.skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:.7rem 1rem;z-index:100}
+.skip:focus{left:.5rem;top:.5rem}
+
+.lbl{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------------- header ---------------- */
+header.top{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--rule)}
+.top .wrap{display:flex;align-items:center;gap:1.5rem;height:76px}
+.brand{display:flex;align-items:center;gap:.7rem;text-decoration:none;flex:none}
+.brand .mark{
+  width:38px;height:38px;border-radius:8px;background:var(--lime);
+  display:grid;place-items:center;font-weight:900;font-size:1.35rem;color:var(--ink);
+}
+.brand b{display:block;font-size:1.22rem;font-weight:900;letter-spacing:-.02em;line-height:1}
+.brand span{display:block;font-family:var(--mono);font-size:.56rem;letter-spacing:.18em;color:var(--muted);margin-top:.2rem}
+
+nav.main{margin-left:auto;display:flex;align-items:center;gap:2rem}
+nav.main a{font-size:.94rem;font-weight:600;text-decoration:none;color:var(--ink-2)}
+nav.main a:hover{color:var(--ink)}
+
+/* Narrow screens keep every link -- the nav moves to its own row under the
+   brand rather than disappearing, so nothing on the page becomes unreachable
+   on a phone. No JS, no hidden menu to get stuck open. */
+@media (max-width:900px){
+  /* Two rows would eat a fifth of a phone screen if they stayed pinned, so the
+     header scrolls away here instead. */
+  header.top{position:static}
+  .top .wrap{height:auto;flex-wrap:wrap;row-gap:0;padding-block:.8rem;gap:.75rem}
+  nav.main{
+    order:3;flex-basis:100%;margin-left:0;gap:1.4rem;
+    overflow-x:auto;scrollbar-width:none;
+    padding-top:.75rem;border-top:1px solid var(--rule);
+  }
+  nav.main::-webkit-scrollbar{display:none}
+  nav.main a{white-space:nowrap;font-size:.9rem;padding-block:.2rem}
+  html{scroll-padding-top:1rem}
+}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.55rem;
+  min-height:48px;padding:0 1.35rem;border:2px solid var(--ink);border-radius:2px;
+  font-family:var(--sans);font-size:.95rem;font-weight:800;text-decoration:none;
+  background:var(--ink);color:var(--paper);cursor:pointer;
+  transition:transform .12s ease,background .12s ease;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--paper)}
+.btn.coral{background:var(--coral);border-color:var(--coral);color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.btn:hover{transform:none}}
+
+/* ---------------- status strip ---------------- */
+.status{background:var(--ink);color:var(--paper)}
+.status .wrap{display:flex;align-items:center;gap:1rem;height:40px;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.15em;text-transform:uppercase}
+.status .dot{width:7px;height:7px;border-radius:50%;background:var(--coral);flex:none}
+.status .mid{margin-inline:auto;color:var(--lime)}
+.status .end{color:#8D8D88}
+@media (max-width:760px){.status .end{display:none}.status .mid{margin-left:auto;margin-right:0}}
+
+/* ---------------- hero ---------------- */
+.hero{position:relative;padding:clamp(2.5rem,6vw,5rem) 0 clamp(3rem,6vw,5rem)}
+.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,transparent 78%);
+  mask-image:linear-gradient(to bottom,#000 0%,transparent 78%);
+  opacity:.55;
+}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(2rem,4vw,3.5rem);align-items:center}
+@media (max-width:1000px){.hero .wrap{grid-template-columns:1fr}}
+
+.eyebrow{display:flex;align-items:center;gap:.8rem;margin-bottom:1.6rem}
+.eyebrow i{display:block;width:34px;height:3px;background:var(--coral);flex:none}
+
+h1.display{
+  font-size:clamp(3.2rem,9.5vw,7rem);
+  line-height:.88;letter-spacing:-.035em;font-weight:900;
+  text-transform:uppercase;text-wrap:balance;margin-bottom:1.6rem;
+}
+h1.display em{display:block;font-style:italic;color:var(--coral);font-stretch:105%}
+
+.lede{font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--ink-2);max-width:36ch;margin-bottom:2rem}
+.cta-row{display:flex;flex-wrap:wrap;gap:.85rem;margin-bottom:2.75rem}
+
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;border-top:1px solid var(--rule);padding-top:1.35rem}
+.trio b{display:block;font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.35rem}
+.trio p{font-size:.86rem;color:var(--muted);line-height:1.45}
+@media (max-width:560px){.trio{grid-template-columns:1fr;gap:1rem}}
+
+/* ---------------- app mockup ---------------- */
+.mock-wrap{position:relative}
+.mock-wrap::after{
+  content:"";position:absolute;inset:14px -18px -18px 14px;background:var(--coral);z-index:0;border-radius:4px;
+}
+.mock{
+  position:relative;z-index:1;background:var(--shell);color:var(--shell-ink);
+  border-radius:5px;overflow:hidden;transform:rotate(-1.2deg);
+  box-shadow:0 24px 60px rgba(14,20,28,.28);
+  font-size:12px;line-height:1.35;
+}
+@media (prefers-reduced-motion:reduce){.mock{transform:none}}
+.mock-bar{display:flex;align-items:center;gap:.6rem;padding:.6rem .85rem;border-bottom:1px solid var(--shell-rule);
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:var(--shell-muted)}
+.mock-bar .dot{width:6px;height:6px;border-radius:50%;background:var(--coral)}
+.mock-bar .ttl{margin-inline:auto;color:var(--shell-ink)}
+.mock-body{display:grid;grid-template-columns:44px minmax(0,1fr)}
+.mock-rail{border-right:1px solid var(--shell-rule);padding:.7rem 0;display:flex;flex-direction:column;align-items:center;gap:.9rem;color:var(--shell-muted)}
+.mock-rail .lime{color:var(--lime);font-weight:900;font-size:.62rem;letter-spacing:.06em}
+.mock-rail i{font-style:normal;font-size:.8rem;opacity:.65}
+.mock-main{padding:.85rem .95rem 1rem;min-width:0}
+.mock-h{display:flex;align-items:flex-end;gap:.6rem;margin-bottom:.8rem}
+.mock-h .k{font-family:var(--mono);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--shell-muted)}
+.mock-h h3{font-size:1.05rem;font-weight:700;letter-spacing:-.01em;line-height:1.1}
+.mock-h .pill{margin-left:auto;background:#2466CF;color:#fff;border-radius:3px;padding:.28rem .55rem;font-size:.56rem;font-weight:800;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:.75rem}
+.stat{border:1px solid var(--shell-rule);border-radius:4px;padding:.5rem .55rem;background:var(--shell-2)}
+.stat .k{font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--shell-muted);display:block;margin-bottom:.2rem}
+.stat b{font-size:1.15rem;font-weight:800;font-variant-numeric:tabular-nums}
+.stat b s{text-decoration:none;font-size:.62rem;color:var(--shell-muted);font-weight:600}
+.stat .bar{height:3px;border-radius:2px;background:#2B3644;margin-top:.35rem;overflow:hidden}
+.stat .bar u{display:block;height:100%;background:#3FBF74;text-decoration:none}
+.stat.alert b{color:var(--coral)}
+.stat.alert .bar u{background:var(--coral)}
+.panes{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:.5rem}
+@media (max-width:520px){.panes{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+.pane{border:1px solid var(--shell-rule);border-radius:4px;background:var(--shell-2);padding:.55rem .6rem}
+.pane .ph{display:flex;align-items:center;gap:.4rem;font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--shell-muted);margin-bottom:.5rem}
+.pane .ph .dot{width:5px;height:5px;border-radius:50%;background:var(--coral)}
+.pane .ph em{margin-left:auto;font-style:normal}
+.fx{border-top:1px solid var(--shell-rule);padding-top:.45rem;margin-top:.45rem}
+.fx:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.fx .r{display:flex;align-items:center;gap:.4rem}
+.fx .tag{background:#2E3B4C;border-radius:2px;padding:.12rem .3rem;font-size:.5rem;font-weight:800;letter-spacing:.04em}
+.fx .nm{font-weight:700;font-size:.62rem}
+.fx .sc{margin-inline:auto;font-variant-numeric:tabular-nums;font-weight:800;font-size:.72rem;white-space:nowrap}
+.fx .meta{font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:var(--shell-muted);margin-top:.2rem}
+.att{display:flex;gap:.45rem;align-items:flex-start;border-top:1px solid var(--shell-rule);padding-top:.45rem;margin-top:.45rem}
+.att:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.att .b{width:14px;height:14px;border-radius:50%;background:rgba(255,90,69,.16);color:var(--coral);display:grid;place-items:center;font-size:.55rem;font-weight:900;flex:none}
+.att b{display:block;font-size:.6rem;font-weight:700}
+.att span{font-family:var(--mono);font-size:.46rem;letter-spacing:.09em;text-transform:uppercase;color:var(--shell-muted)}
+.mock-foot{border-top:1px solid var(--shell-rule);padding:.5rem .95rem;display:flex;
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--shell-muted)}
+.mock-foot em{margin-left:auto;font-style:normal;color:var(--lime)}
+
+/* ---------------- marquee ---------------- */
+.marquee{background:var(--lime);border-block:2px solid var(--ink);overflow:hidden;padding:.85rem 0}
+.marquee ul{display:flex;gap:2.5rem;list-style:none;width:max-content;animation:slide 34s linear infinite}
+.marquee li{display:flex;align-items:center;gap:2.5rem;font-size:clamp(1.1rem,2.4vw,1.75rem);
+  font-weight:900;letter-spacing:-.02em;text-transform:uppercase;white-space:nowrap}
+.marquee li::after{content:"✦";color:var(--coral);font-size:.7em}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.marquee ul{animation:none;width:100%;justify-content:center;flex-wrap:wrap;gap:1.25rem}.marquee li{gap:1.25rem}}
+
+/* ---------------- sections ---------------- */
+section{padding:clamp(3.5rem,7vw,6rem) 0}
+.sec-head{margin-bottom:2.5rem;max-width:var(--measure)}
+.sec-head h2{font-size:clamp(1.9rem,4.2vw,3rem);line-height:1.02;letter-spacing:-.03em;font-weight:900;text-wrap:balance;margin-top:.75rem}
+.sec-head p{color:var(--ink-2);margin-top:.9rem;font-size:1.03rem}
+
+.before{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;border:1px solid var(--rule);background:#fff}
+.before div{padding:1.1rem 1.15rem;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.before div:last-child{border-right:0}
+.before b{display:block;font-size:.95rem;font-weight:800}
+.before span{font-family:var(--mono);font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:var(--coral)}
+
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.grid3 article{background:var(--paper);padding:1.5rem 1.4rem}
+.grid3 .n{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;color:var(--coral)}
+.grid3 h3{font-size:1.12rem;font-weight:800;letter-spacing:-.015em;margin:.5rem 0 .45rem}
+.grid3 p{font-size:.92rem;color:var(--muted);line-height:1.55}
+.grid3 .new{display:inline-block;background:var(--lime);color:var(--ink);font-family:var(--mono);
+  font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:.16rem .4rem;margin-left:.4rem;vertical-align:middle}
+
+.road{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem}
+.road article{border-top:3px solid var(--ink);padding-top:1.1rem}
+.road article.next{border-top-color:var(--coral)}
+.road article.later{border-top-color:var(--rule)}
+.road .k{display:flex;align-items:baseline;gap:.6rem;font-family:var(--mono);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.road .k b{font-size:1.6rem;color:var(--ink);font-weight:900;letter-spacing:-.03em}
+.road h3{font-size:1.18rem;font-weight:850;margin:.55rem 0 .5rem;letter-spacing:-.015em}
+.road p{font-size:.93rem;color:var(--ink-2)}
+
+/* ---------------- pricing ---------------- */
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:1.25rem;align-items:start}
+.tier{border:2px solid var(--ink);background:#fff;padding:1.75rem 1.5rem;display:flex;flex-direction:column;min-height:100%}
+.tier.feature{background:var(--ink);color:var(--paper);position:relative}
+.tier.feature .price,.tier.feature h3{color:var(--paper)}
+.tier.feature li{color:#D6D2C7}
+.tier .flag{position:absolute;top:-2px;right:-2px;background:var(--lime);color:var(--ink);
+  font-family:var(--mono);font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700;padding:.3rem .55rem}
+.tier h3{font-size:1.28rem;font-weight:900;letter-spacing:-.02em}
+.tier .price{font-size:2.2rem;font-weight:900;letter-spacing:-.035em;margin:.5rem 0 .15rem;line-height:1}
+.tier .price small{font-size:.7rem;font-weight:700;letter-spacing:.04em;color:var(--muted);display:block;margin-top:.35rem;text-transform:uppercase;font-family:var(--mono)}
+.tier.feature .price small{color:#A8A399}
+.tier ul{list-style:none;margin:1.25rem 0 1.5rem;display:flex;flex-direction:column;gap:.55rem}
+.tier li{font-size:.92rem;color:var(--ink-2);display:flex;gap:.55rem;align-items:flex-start}
+.tier li::before{content:"→";color:var(--coral);font-weight:800;flex:none}
+.tier .btn{margin-top:auto;width:100%}
+.tier.feature .btn{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+
+/* ---------------- final cta ---------------- */
+.final{background:var(--ink);color:var(--paper)}
+.final h2{font-size:clamp(2rem,5vw,3.6rem);line-height:.98;letter-spacing:-.035em;font-weight:900;
+  text-transform:uppercase;text-wrap:balance;max-width:18ch}
+.final h2 em{font-style:italic;color:var(--lime)}
+.final p{color:#B6B2A8;margin:1.1rem 0 2rem;max-width:48ch}
+.signup{display:flex;flex-wrap:wrap;gap:.6rem;max-width:520px}
+.signup input{
+  flex:1 1 240px;min-height:52px;padding:0 1rem;border:2px solid #3A3A38;border-radius:2px;
+  background:#1A1A18;color:var(--paper);font-family:var(--sans);font-size:1rem;
+}
+.signup input::placeholder{color:#7A766D}
+.signup input:focus{border-color:var(--lime);outline:none}
+.signup .btn{background:var(--lime);border-color:var(--lime);color:var(--ink);flex:0 0 auto}
+.signup .note{flex-basis:100%;font-size:.8rem;color:#8D8980;margin-top:.2rem}
+
+/* ---------------- footer ---------------- */
+footer.site{border-top:1px solid var(--rule);padding:2.5rem 0 3.5rem}
+footer.site .row{display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center;margin-bottom:1.5rem}
+footer.site nav{display:flex;flex-wrap:wrap;gap:1.35rem;margin-left:auto}
+footer.site nav a{font-size:.88rem;font-weight:600;text-decoration:none;color:var(--ink-2)}
+footer.site nav a:hover{color:var(--ink)}
+footer.site .fine{font-size:.78rem;color:var(--muted);max-width:74ch;line-height:1.6}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Rivals Tournament Director, home">
+      <span class="mark" aria-hidden="true">R</span>
+      <span><b>RTD</b><span>Rivals Tournament Director</span></span>
+    </a>
+    <nav class="main" aria-label="Main">
+      <a href="#toolkit">Features</a>
+      <a href="#builtfor">Built for</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#roadmap">Roadmap</a>
+    </nav>
+    <a class="btn" href="#access" style="flex:none">Get early access <span aria-hidden="true">↗</span></a>
+  </div>
+</header>
+
+<div class="status">
+  <div class="wrap">
+    <span class="dot" aria-hidden="true"></span>
+    <span>System status</span>
+    <span class="mid">The control room is open</span>
+    <span class="end">Build 0.2.1 // Desktop</span>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ============ hero ============ -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow lbl"><i aria-hidden="true"></i> Built for Marvel Rivals communities</p>
+
+        <h1 class="display">Run the <em>whole show.</em></h1>
+
+        <p class="lede">
+          Run your tournament from one screen instead of six tabs. Brackets, check-in, live match
+          control, broadcast and results — on your desktop, beside the game.
+        </p>
+
+        <div class="cta-row">
+          <a class="btn" href="#access">Get early access <span aria-hidden="true">→</span></a>
+          <a class="btn ghost" href="#toolkit">Explore the system</a>
+        </div>
+
+        <div class="trio">
+          <div><b>Local-first</b><p>Your event keeps running.</p></div>
+          <div><b>Desktop-native</b><p>Built to sit beside the game.</p></div>
+          <div><b>TO-focused</b><p>No stat-tracker clutter.</p></div>
+        </div>
+      </div>
+
+      <div class="mock-wrap">
+        <div class="mock" role="img" aria-label="RTD control room: 14 of 16 teams checked in, 18 of 31 matches complete, 2 live now, 3 items needing attention, with live match scores and an attention queue.">
+          <div class="mock-bar">
+            <span class="dot" aria-hidden="true"></span><span>Event live</span>
+            <span class="ttl">Campus Clash // Fall Invitational</span>
+            <span>14:32:08</span>
+          </div>
+          <div class="mock-body">
+            <div class="mock-rail" aria-hidden="true">
+              <span class="lime">RTD</span>
+              <i>⌁</i><i>▣</i><i>⌘</i><i>✓</i><i>◫</i><i>⚙</i>
+            </div>
+            <div class="mock-main">
+              <div class="mock-h">
+                <div>
+                  <span class="k">Tournament ops</span>
+                  <h3>Control room</h3>
+                </div>
+                <span class="pill">＋ Add match</span>
+              </div>
+
+              <div class="stats">
+                <div class="stat"><span class="k">Checked in</span><b>14<s>/16</s></b><div class="bar"><u style="width:88%"></u></div></div>
+                <div class="stat"><span class="k">Complete</span><b>18<s>/31</s></b><div class="bar"><u style="width:58%"></u></div></div>
+                <div class="stat"><span class="k">Live now</span><b>02</b><div class="bar"><u style="width:34%"></u></div></div>
+                <div class="stat alert"><span class="k">Needs attention</span><b>03</b><div class="bar"><u style="width:26%"></u></div></div>
+              </div>
+
+              <div class="panes">
+                <div class="pane">
+                  <div class="ph"><span class="dot" aria-hidden="true"></span>Live now <em>2 matches</em></div>
+                  <div class="fx">
+                    <div class="r"><span class="tag">NC</span><span class="nm">Nova Core</span>
+                      <span class="sc">1 — 1</span><span class="nm">Kinetic Six</span><span class="tag">K6</span></div>
+                    <div class="meta">Upper semifinal · Map 3 · Birnin T'Challa · Stream A</div>
+                  </div>
+                  <div class="fx">
+                    <div class="r"><span class="tag">CT</span><span class="nm">Crimson Tide</span>
+                      <span class="sc">0 — 1</span><span class="nm">Atlas Protocol</span><span class="tag">AP</span></div>
+                    <div class="meta">Lower round 2 · Map 2 · Yggsgard · Station 3</div>
+                  </div>
+                </div>
+
+                <div class="pane">
+                  <div class="ph">Needs attention <em>03</em></div>
+                  <div class="att"><span class="b" aria-hidden="true">!</span><div><b>Team not checked in</b><span>16 min late</span></div></div>
+                  <div class="att"><span class="b" aria-hidden="true">~</span><div><b>Match delayed</b><span>Waiting 11 min</span></div></div>
+                  <div class="att"><span class="b" aria-hidden="true">?</span><div><b>Result conflict</b><span>Review needed</span></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mock-foot"><span>Live event telemetry</span><em>Every signal. One screen.</em></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ marquee ============ -->
+  <div class="marquee" aria-hidden="true">
+    <ul>
+      <li>Brackets</li><li>Check-ins</li><li>Broadcast</li><li>Officials</li><li>Results</li><li>Control room</li>
+      <li>Brackets</li><li>Check-ins</li><li>Broadcast</li><li>Officials</li><li>Results</li><li>Control room</li>
+    </ul>
+  </div>
+
+  <!-- ============ problem ============ -->
+  <section id="problem">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="lbl">The problem</p>
+        <h2>Great tournaments are held together by too many tabs.</h2>
+        <p>
+          A bracket site, a Discord, a roster sheet, a stream doc, an incident file, and a folder of
+          result screenshots. You become the thing keeping them in sync, and every hop between them
+          is somewhere a mistake gets in.
+        </p>
+      </div>
+      <div class="before">
+        <div><span>Before</span><b>Bracket website</b></div>
+        <div><span>Before</span><b>Discord channels</b></div>
+        <div><span>Before</span><b>Roster sheet</b></div>
+        <div><span>Before</span><b>Stream doc</b></div>
+        <div><span>Before</span><b>Incident notes</b></div>
+        <div><span>Before</span><b>Result screenshots</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ toolkit ============ -->
+  <section id="toolkit" style="background:var(--paper-2)">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="lbl">The toolkit</p>
+        <h2>Eleven modules. One window.</h2>
+        <p>Each one does a job you are already doing by hand. Nothing here is a dashboard for its own sake.</p>
+      </div>
+      <div class="grid3">
+        <article><span class="n">01</span><h3>Tournament builder</h3><p>Name, date, format and match length. Single elimination, double elimination or round robin — the choice drives the whole event.</p></article>
+        <article><span class="n">02</span><h3>Team + player manager</h3><p>Rosters with starters and substitutes, captains, orgs and logos. Search finds a team by any player's gamertag.</p></article>
+        <article><span class="n">03</span><h3>Bracket engine</h3><p>Byes handled automatically. Correct a result and every later round un-advances with it, because the bracket is recomputed rather than pushed forward.</p></article>
+        <article><span class="n">04</span><h3>Match control</h3><p>Add a game per map won. The match closes itself at the right score and advances the winner.</p></article>
+        <article><span class="n">05</span><h3>Check-in <span class="new">Now online</span></h3><p>Captains check themselves in from a private link — on your network, or from anywhere once you publish it.</p></article>
+        <article><span class="n">06</span><h3>Rules center</h3><p>A versioned rulebook. Publishing a new version clears acceptances, because a rule that changed was not the one they agreed to.</p></article>
+        <article><span class="n">07</span><h3>Broadcast center</h3><p>An OBS browser source with real transparency, a run of show, and caster notes.</p></article>
+        <article><span class="n">08</span><h3>Live scoreboard <span class="new">New</span></h3><p>A public page for spectators showing fixtures, scores and the champion. No rosters, no names, no lobby codes.</p></article>
+        <article><span class="n">09</span><h3>AI caster notes <span class="new">New</span></h3><p>Talking points drawn from what actually happened — records, earlier meetings, win streaks. Runs on your own API key, cents per event.</p></article>
+        <article><span class="n">10</span><h3>Results + awards</h3><p>Standings, an event page, roster CSV, and certificates as a real PDF.</p></article>
+        <article><span class="n">11</span><h3>Event backups</h3><p>Every change written atomically with a rolling backup. If the power goes, the event does not.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ built for ============ -->
+  <section id="builtfor">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="lbl">Built for</p>
+        <h2>People who run the event, not watch it.</h2>
+      </div>
+      <div class="grid3">
+        <article><span class="n">01</span><h3>College programs</h3><p>Campus leagues and invitationals where one person is director, referee and caster.</p></article>
+        <article><span class="n">02</span><h3>Community TOs</h3><p>Weeklies and monthlies where setup time is the thing that kills you.</p></article>
+        <article><span class="n">03</span><h3>Online leagues</h3><p>Teams in six different states. Captains check in from home over a published link.</p></article>
+        <article><span class="n">04</span><h3>LAN events</h3><p>Gaming cafés, conventions and local events where reliability matters more than features.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ roadmap ============ -->
+  <section id="roadmap" style="background:var(--paper-2)">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="lbl">Roadmap</p>
+        <h2>What's done, what's next.</h2>
+        <p>Shipped means shipped. Nothing on this page describes something you cannot use today.</p>
+      </div>
+      <div class="road">
+        <article>
+          <div class="k"><b>01</b> Now</div>
+          <h3>Running events</h3>
+          <p>Builder, teams, matches, all three bracket formats, check-in on and off your network, rules, broadcast, the live spectator scoreboard, AI caster notes, results and the event library.</p>
+        </article>
+        <article class="next">
+          <div class="k"><b>02</b> Next</div>
+          <h3>Rules answers and dispute help</h3>
+          <p>Ask your own rulebook a question and get the clause back. Incidents sorted by severity, with a flag when a ruling contradicts one you already made.</p>
+        </article>
+        <article class="later">
+          <div class="k"><b>03</b> Later</div>
+          <h3>Crew coordination</h3>
+          <p>Volunteer schedules, referee assignments, permissions and sponsor assets — the parts of an event that involve other people.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ pricing ============ -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="lbl">Simple editions</p>
+        <h2>Start small.</h2>
+        <p>Buy it once. There is no subscription and no account — the software installs on your computer and the event lives there.</p>
+      </div>
+      <div class="tiers">
+        <div class="tier">
+          <h3>Community</h3>
+          <div class="price">Free<small>Get started</small></div>
+          <ul>
+            <li>Up to 8 teams</li>
+            <li>Single-elimination brackets</li>
+            <li>Team check-in</li>
+            <li>Core match control</li>
+            <li>One active event</li>
+          </ul>
+          <a class="btn ghost" href="#access">Start free</a>
+        </div>
+
+        <div class="tier feature">
+          <span class="flag">Most popular</span>
+          <h3>Organizer</h3>
+          <div class="price">$149<small>One time</small></div>
+          <ul>
+            <li>Unlimited teams and events</li>
+            <li>All three bracket formats</li>
+            <li>Control room + broadcast</li>
+            <li>Online check-in and live scoreboard</li>
+            <li>Rules and incident tools</li>
+            <li>AI tools, on your own API key</li>
+            <li>Backups, exports and templates</li>
+          </ul>
+          <a class="btn" href="#access">Get launch pricing</a>
+        </div>
+
+        <div class="tier">
+          <h3>League</h3>
+          <div class="price">Let's talk<small>Custom</small></div>
+          <ul>
+            <li>Multiple organizers</li>
+            <li>Shared player database</li>
+            <li>Seasons and recurring events</li>
+            <li>Volunteer scheduling</li>
+            <li>Priority onboarding</li>
+            <li>Organization-wide workspace</li>
+          </ul>
+          <a class="btn ghost" href="mailto:jason@nyonic.com?subject=RTD%20League%20edition">Contact us</a>
+        </div>
+      </div>
+      <p style="margin-top:1.5rem;font-size:.86rem;color:var(--muted);max-width:var(--measure)">
+        AI features run on an Anthropic API key you supply and are billed to your account. A full
+        event costs a few cents. RTD never charges you for it and never stores the key anywhere it
+        can be exported.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ final cta ============ -->
+  <section class="final" id="access">
+    <div class="wrap">
+      <p class="lbl" style="color:#8D8980">Get early access</p>
+      <h2>Your next tournament deserves a <em>control room.</em></h2>
+      <p>
+        Tell me where to send the build. You will get the installer, the run-day checklist, and
+        nothing else.
+      </p>
+      <form class="signup" action="mailto:jason@nyonic.com" method="post" enctype="text/plain">
+        <label for="email" class="skip">Email address</label>
+        <input id="email" name="email" type="email" required placeholder="you@example.com" autocomplete="email">
+        <button class="btn" type="submit">Request access</button>
+        <span class="note">Opens your mail app. No list, no tracking, no follow-up sequence.</span>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="row">
+      <a class="brand" href="/" aria-label="Rivals Tournament Director, home">
+        <span class="mark" aria-hidden="true">R</span>
+        <span><b>RTD</b><span>Rivals Tournament Director</span></span>
+      </a>
+      <nav aria-label="Footer">
+        <a href="#toolkit">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="mailto:jason@nyonic.com">Contact</a>
+      </nav>
+    </div>
+    <p class="fine">
+      RTD is an independent product and is not affiliated with or endorsed by Marvel, NetEase Games,
+      or their partners. Marvel Rivals is a trademark of its respective owners. A NYONIC product.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
