@@ -9,17 +9,30 @@ One static file. No build step, no framework, no dependencies — open
 ## Why this exists
 
 The original landing page was a Next.js app deployed to `rivalstd.vercel.app` on
-2026-08-11 and then lost: it is not in the `Jason's projects` Vercel team, not
-under the `dietwedge` GitHub org, and not on this machine. It sat at `BUILD 0.1`
-for a month while the app shipped online check-in, a public scoreboard and AI
-features, so the product page described a version that no longer existed.
+2026-08-11 from a **second Vercel account** — not the one holding the other 38
+projects. It was effectively unreachable: not in the `Jason's projects` team, not
+under the `dietwedge` GitHub org, and never on this machine. It sat at
+`BUILD 0.1` for a month while the app shipped online check-in, a public
+scoreboard and AI features, so the product page described a version that no
+longer existed.
+
+It was found and deleted on 2026-09-10, which released the `rivalstd.vercel.app`
+subdomain — `*.vercel.app` names are globally unique, so the old project had been
+holding it hostage.
 
 This is a rebuild from the live page's own markup plus the full-resolution
 screenshot at `../launch-day/_asset-originals/work-rivalstd.png`. Same visual
-identity, corrected copy, and now version-controlled so it can be updated
-whenever RTD ships.
+identity, corrected copy, one static file instead of a Next.js app, and now
+version-controlled so it can be updated whenever RTD ships.
 
-If the original ever turns up, delete that Vercel project rather than reviving it.
+## Deploying
+
+The Vercel project is **`rivalstd`** in the `jasons-projects-b8ef8e9d` team,
+linked to this repo. **Pushing to `main` deploys it** — there is no CLI step and
+no build.
+
+Note that renaming a Vercel project does not re-alias existing deployments; the
+new hostname only attaches to the next deploy.
 
 ## Design notes
 
