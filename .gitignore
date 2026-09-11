@@ -1,6 +1,11 @@
 # Vercel CLI link + build cache
 .vercel/
 
+# Local agent tooling telemetry -- writes itself into whatever directory is cwd
+.claude-flow/
+.agents/
+.remember/
+
 # OS noise
 .DS_Store
 Thumbs.db
