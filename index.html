@@ -84,12 +84,13 @@ header.top{position:sticky;top:0;z-index:50;background:var(--paper);border-botto
 .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none;flex:none}
 /* The mark is the product: two teams feeding a bracket into one champion.
    A letter in a box could belong to anything. */
-.brand .mark{width:40px;height:40px;flex:none;display:block}
-/* Same misregistration as the hero, but a fixed 2px rather than .05em -- at
-   this size an em-scaled offset lands under a pixel and just reads as blur. */
-.brand b{display:block;font-size:1.3rem;font-weight:900;letter-spacing:-.02em;line-height:1;
-  text-shadow:2px 2px 0 var(--coral)}
-.brand span{display:block;font-family:var(--mono);font-size:.56rem;letter-spacing:.18em;color:var(--muted);margin-top:.2rem}
+.brand .mark{width:46px;height:46px;flex:none;display:block}
+/* The app's name should be the loudest thing in the lockup -- it was smaller
+   than the mark beside it. Offset is fixed px, not em: at this size an
+   em-scaled value lands sub-pixel and reads as blur, not a second impression. */
+.brand b{display:block;font-size:2.05rem;font-weight:900;letter-spacing:-.035em;line-height:.92;
+  text-transform:uppercase;text-shadow:3px 3px 0 var(--coral)}
+.brand span{display:block;font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;color:var(--muted);margin-top:.32rem}
 
 nav.main{margin-left:auto;display:flex;align-items:center;gap:2rem}
 nav.main a{font-size:.94rem;font-weight:600;text-decoration:none;color:var(--ink-2)}
