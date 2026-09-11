@@ -85,12 +85,20 @@ header.top{position:sticky;top:0;z-index:50;background:var(--paper);border-botto
 /* The mark is the product: two teams feeding a bracket into one champion.
    A letter in a box could belong to anything. */
 .brand .mark{width:46px;height:46px;flex:none;display:block}
-/* The app's name should be the loudest thing in the lockup -- it was smaller
-   than the mark beside it. Offset is fixed px, not em: at this size an
-   em-scaled value lands sub-pixel and reads as blur, not a second impression. */
-.brand b{display:block;font-size:2.05rem;font-weight:900;letter-spacing:-.035em;line-height:.92;
-  text-transform:uppercase;text-shadow:3px 3px 0 var(--coral)}
-.brand span{display:block;font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;color:var(--muted);margin-top:.32rem}
+/* The wordmark is the logotype: same face, same weight, same width as the hero
+   display type, so the name reads as branding rather than as a heading.
+   font-family is stated explicitly -- an earlier `.brand span` rule matched the
+   wrapper as well as the descriptor and silently dropped RTD into the mono
+   stack with a synthesized bold, which is why it looked thin at every size. */
+.brand-text{display:block;min-width:0}
+.brand b{
+  display:block;font-family:var(--sans);font-size:2.35rem;font-weight:900;
+  font-variation-settings:'wght' 900,'wdth' 112;
+  letter-spacing:-.045em;line-height:.86;text-transform:uppercase;
+  text-shadow:3px 3px 0 var(--coral);
+}
+.brand small{display:block;font-family:var(--mono);font-size:.57rem;font-weight:500;
+  letter-spacing:.19em;color:var(--muted);margin-top:.4rem}
 
 nav.main{margin-left:auto;display:flex;align-items:center;gap:2rem}
 nav.main a{font-size:.94rem;font-weight:600;text-decoration:none;color:var(--ink-2)}
@@ -325,7 +333,7 @@ footer.site .fine{font-size:.78rem;color:var(--muted);max-width:74ch;line-height
         <path d="M7 11H15V29H7M15 20H22" fill="none" stroke="var(--paper)" stroke-width="2.6" stroke-linecap="square"/>
         <circle cx="27" cy="20" r="5" fill="var(--lime)"/>
       </svg>
-      <span><b>RTD</b><span>Rivals Tournament Director</span></span>
+      <span class="brand-text"><b>RTD</b><small>Rivals Tournament Director</small></span>
     </a>
     <nav class="main" aria-label="Main">
       <a href="#toolkit">Features</a>
@@ -669,7 +677,7 @@ footer.site .fine{font-size:.78rem;color:var(--muted);max-width:74ch;line-height
         <path d="M7 11H15V29H7M15 20H22" fill="none" stroke="var(--paper)" stroke-width="2.6" stroke-linecap="square"/>
         <circle cx="27" cy="20" r="5" fill="var(--lime)"/>
       </svg>
-        <span><b>RTD</b><span>Rivals Tournament Director</span></span>
+        <span class="brand-text"><b>RTD</b><small>Rivals Tournament Director</small></span>
       </a>
       <nav aria-label="Footer">
         <a href="#toolkit">Features</a>
