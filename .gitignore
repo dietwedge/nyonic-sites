@@ -19,3 +19,6 @@ desktop.ini
 # Nothing here needs a build step, but keep these out if one is ever added
 node_modules/
 dist/
+
+.vercel
+.env*
