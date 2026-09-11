@@ -85,7 +85,10 @@ header.top{position:sticky;top:0;z-index:50;background:var(--paper);border-botto
 /* The mark is the product: two teams feeding a bracket into one champion.
    A letter in a box could belong to anything. */
 .brand .mark{width:40px;height:40px;flex:none;display:block}
-.brand b{display:block;font-size:1.22rem;font-weight:900;letter-spacing:-.02em;line-height:1}
+/* Same misregistration as the hero, but a fixed 2px rather than .05em -- at
+   this size an em-scaled offset lands under a pixel and just reads as blur. */
+.brand b{display:block;font-size:1.3rem;font-weight:900;letter-spacing:-.02em;line-height:1;
+  text-shadow:2px 2px 0 var(--coral)}
 .brand span{display:block;font-family:var(--mono);font-size:.56rem;letter-spacing:.18em;color:var(--muted);margin-top:.2rem}
 
 nav.main{margin-left:auto;display:flex;align-items:center;gap:2rem}
