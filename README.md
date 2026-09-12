@@ -28,11 +28,35 @@ version-controlled so it can be updated whenever RTD ships.
 ## Deploying
 
 The Vercel project is **`rivalstd`** in the `jasons-projects-b8ef8e9d` team,
-linked to this repo. **Pushing to `main` deploys it** — there is no CLI step and
-no build.
+linked to this repo. Pushing to `main` deploys it. There is no build step — the
+site is one static file.
 
-Note that renaming a Vercel project does not re-alias existing deployments; the
-new hostname only attaches to the next deploy.
+If a push produces a deployment stuck in `BLOCKED`, it is commit attribution,
+not the repo link. Two different things are both called "connecting GitHub":
+
+- **Project ↔ repository** — makes the push *fire* a deployment.
+- **Account ↔ GitHub login** — at `vercel.com/account/settings/authentication`
+  under **Login Connections**. On a Hobby team the commit author must resolve to
+  the team owner, and without this link Vercel cannot match GitHub user
+  `dietwedge` to the Vercel account and blocks the build. Hobby also does not
+  support collaboration on *private* repos at all; making the repo public is the
+  other way out.
+
+The always-available fallback, which needs neither:
+
+```
+cd rivalstd-landing && npx vercel deploy --prod --yes
+```
+
+Two Vercel behaviors worth knowing before changing anything here:
+
+- Renaming a project does **not** re-assign its `<name>.vercel.app` domain —
+  that is pinned at creation. `vercel domains add <host> <project>` attaches a
+  new one so it follows production; `vercel alias set` only pins it to a single
+  deployment.
+- After deploying, the production alias can lag by a few seconds. Verify with a
+  cache-buster or against the deployment URL, or you will read the old build and
+  think the deploy failed.
 
 ## Design notes
 
