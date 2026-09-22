@@ -1,0 +1,24 @@
+# Vercel CLI link + build cache
+.vercel/
+
+# Local agent tooling telemetry -- writes itself into whatever directory is cwd
+.claude-flow/
+.agents/
+.remember/
+
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.idea/
+.vscode/
+*.swp
+
+# Nothing here needs a build step, but keep these out if one is ever added
+node_modules/
+dist/
+
+.vercel
+.env*
