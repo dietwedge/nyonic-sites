@@ -1,0 +1,6 @@
+.vercel/
+.env*
+.DS_Store
+Thumbs.db
+.claude-flow/
+__pycache__/

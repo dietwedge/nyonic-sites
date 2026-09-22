@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SnowCalls — Every missed call, answered | NYONIC</title>
+<meta name="description" content="24/7 storm line for snow removal contractors. Every 3am plow call answered, qualified and dispatched while you are still in the truck.">
+<meta name="theme-color" content="#0D1830">
+<meta property="og:title" content="SnowCalls — Every missed call, answered">
+<meta property="og:description" content="It starts snowing at 2am. The phone starts at 2:15. SnowCalls answers every one of them.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230D1830'/%3E%3Cg transform='translate(32,32) scale(.78) translate(-32,-32)'%3E%3Cg stroke='%238FD8F2' stroke-width='3.7' stroke-linecap='round' fill='none'%3E%3Cpath d='M44 4.5 v31 M30.6 12.25 L57.4 27.75 M30.6 27.75 L57.4 12.25'/%3E%3Cpath d='M40 8.6 L44 12 L48 8.6 M40 31.4 L44 28 L48 31.4'/%3E%3C/g%3E%3Cpath d='M16.5 20c-2.4 0-4.6 2.2-4.6 4.6 0 15.6 13.4 29 29 29 2.4 0 4.6-2.2 4.6-4.6v-5.6l-10.1-3.4-4.5 4.5c-5.6-3.4-10.1-7.9-13.5-13.5l4.5-4.5z' fill='%23F4F2EC'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+  :root{
+    --ink:#0D1830;        /* midnight navy */
+    --ink-2:#08101F;      /* deeper night slab */
+    --ice:#8FD8F2;        /* pale ice — accent on DARK grounds */
+    --ice-mid:#5FC0E4;    /* fills and wordmark on dark */
+    --ice-dk:#0E6B96;     /* accent on LIGHT grounds — contrast-checked */
+    --frost:#DCEEF8;      /* frost wash */
+    --cream:#F4F2EC;      /* shared with TreeCalls */
+    --cream-2:#EAE7DF;
+    --orange:#FF6B1A;     /* shared with TreeCalls — action only */
+    --body:#3A4455;
+    --muted:#7C8BA6;
+    --line:rgba(255,255,255,.14);
+    --line-dark:rgba(13,24,48,.14);
+    --maxw:1120px;
+    --r:14px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--cream);color:var(--body);
+    font:400 17px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{color:var(--ink);margin:0 0 .5em;letter-spacing:-.022em;line-height:1.1;font-weight:700}
+  h1{font-size:clamp(2.3rem,6.2vw,4.1rem)}
+  h2{font-size:clamp(1.75rem,3.7vw,2.65rem)}
+  h3{font-size:1.12rem;line-height:1.35}
+  p{margin:0 0 1.1em}
+  a{color:inherit}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .sec{padding:clamp(64px,9vw,112px) 0}
+  .dark{background:var(--ink);color:#C6D6DC}
+  .dark h1,.dark h2,.dark h3,.hero h1,.hero h2,.hero h3{color:#fff}
+  .darker{background:var(--ink-2)}
+  .label{
+    font-size:.735rem;letter-spacing:.17em;text-transform:uppercase;
+    font-weight:700;color:var(--ice-dk);margin:0 0 .9em
+  }
+  .dark .label,.hero .label{color:var(--ice)}
+  .lede{font-size:clamp(1.06rem,1.9vw,1.28rem);max-width:62ch}
+  .center{text-align:center;margin-inline:auto}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;background:rgba(13,24,48,.94);
+    backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid var(--line)
+  }
+  .bar{display:flex;align-items:center;gap:16px;height:66px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;color:#fff;text-decoration:none;letter-spacing:-.02em;font-size:1.12rem}
+  .logo svg{width:29px;height:29px;flex:none}
+  .logo b{color:var(--ice-mid);font-weight:700}
+  .bar .sp{margin-left:auto}
+  .btn{
+    display:inline-block;background:var(--orange);color:#fff;text-decoration:none;
+    font-weight:700;padding:13px 22px;border-radius:10px;font-size:.95rem;
+    border:0;cursor:pointer;transition:transform .16s ease,filter .16s ease;
+    line-height:1.2;text-align:center
+  }
+  .btn:hover{filter:brightness(1.07);transform:translateY(-1px)}
+  .btn.ghost{background:transparent;color:#fff;border:1px solid var(--line);font-weight:600}
+  .btn.ghost:hover{background:rgba(255,255,255,.07)}
+  .btn.sm{padding:10px 17px;font-size:.9rem}
+
+  /* ---------- personalized banner ---------- */
+  #forbar{display:none;background:var(--ice-mid);color:#08182B}
+  #forbar.on{display:block}
+  #forbar .wrap{padding-block:11px;font-size:.94rem;font-weight:600;display:flex;gap:10px;align-items:center;justify-content:center;text-align:center;flex-wrap:wrap}
+  #forbar svg{width:17px;height:17px;flex:none}
+
+  /* ---------- hero ---------- */
+  .hero{background:var(--ink);color:#C6D6DC;padding:clamp(60px,8.5vw,104px) 0 clamp(56px,7vw,88px)}
+  .hero h1{margin-bottom:.34em}
+  .hero .lede{color:#B7CBD2;font-size:clamp(1.1rem,2vw,1.34rem)}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+  .hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(32px,5vw,68px);align-items:center}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:40px}}
+
+  /* ---------- transcript ---------- */
+  .phone{
+    background:var(--ink-2);border:1px solid var(--line);border-radius:var(--r);
+    padding:22px;box-shadow:0 22px 50px -22px rgba(0,0,0,.7)
+  }
+  .phone-top{
+    display:flex;align-items:center;gap:9px;padding-bottom:14px;margin-bottom:16px;
+    border-bottom:1px solid var(--line);font-size:.79rem;color:var(--muted);
+    letter-spacing:.08em;text-transform:uppercase;font-weight:700
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--ice-mid);flex:none}
+  .msg{margin-bottom:13px;max-width:88%;font-size:.94rem;line-height:1.5}
+  .msg .who{display:block;font-size:.7rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;font-weight:700}
+  .msg .bub{display:block;padding:11px 14px;border-radius:11px}
+  .msg.them .bub{background:rgba(255,255,255,.07);color:#DCE7EB;border-top-left-radius:3px}
+  .msg.us{margin-left:auto}
+  .msg.us .who{text-align:right;color:var(--ice-mid)}
+  .msg.us .bub{background:var(--ice-mid);color:#08182B;border-top-right-radius:3px;font-weight:500}
+  .booked{
+    margin-top:18px;padding:15px;border-radius:11px;background:rgba(95,192,228,.12);
+    border:1px solid rgba(95,192,228,.4)
+  }
+  .booked .h{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ice-mid);font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .booked dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:5px 14px;font-size:.9rem}
+  .booked dt{color:var(--muted);font-weight:600}
+  .booked dd{margin:0;color:#EAF4F6}
+
+  /* ---------- cards ---------- */
+  .grid{display:grid;gap:20px}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:860px){.g3,.g2{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--line-dark);border-radius:var(--r);padding:26px}
+  .dark .card{background:rgba(255,255,255,.045);border-color:var(--line)}
+  .dark .card p{color:#B7CBD2}
+  .card .n{
+    display:inline-flex;align-items:center;justify-content:center;width:31px;height:31px;
+    border-radius:8px;background:var(--ice-mid);color:#08182B;font-weight:700;font-size:.9rem;margin-bottom:14px
+  }
+  .card p:last-child{margin-bottom:0}
+
+  ul.ticks{list-style:none;padding:0;margin:0}
+  ul.ticks li{position:relative;padding-left:31px;margin-bottom:13px}
+  ul.ticks li:last-child{margin-bottom:0}
+  ul.ticks li::before{
+    content:"";position:absolute;left:0;top:.42em;width:17px;height:9px;
+    border-left:2.5px solid var(--ice-dk);border-bottom:2.5px solid var(--ice-dk);
+    transform:rotate(-45deg)
+  }
+  .dark ul.ticks li::before{border-color:var(--ice)}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4.5vw,60px);align-items:start}
+  @media(max-width:860px){.split{grid-template-columns:1fr;gap:34px}}
+
+  details{border-top:1px solid var(--line-dark);padding:19px 0}
+  details:last-of-type{border-bottom:1px solid var(--line-dark)}
+  summary{cursor:pointer;font-weight:700;color:var(--ink);list-style:none;display:flex;gap:14px;align-items:flex-start;font-size:1.04rem}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";margin-left:auto;color:var(--ice-dk);font-size:1.5rem;line-height:1;flex:none}
+  details[open] summary::after{content:"–"}
+  details p{margin:13px 0 0;max-width:68ch}
+
+  .price{background:#fff;border:2px solid var(--ink);border-radius:var(--r);padding:clamp(28px,4vw,42px);text-align:center;max-width:620px}
+  .price .amt{font-size:clamp(2.1rem,5vw,3rem);font-weight:700;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-bottom:6px}
+  .price .sub{color:var(--muted);font-size:.96rem;margin-bottom:22px}
+
+  footer{background:var(--ink-2);color:#8FA5AD;padding:44px 0;font-size:.92rem}
+  footer a{color:var(--ice-mid)}
+  .fnote{font-size:.86rem;color:var(--muted);margin-top:22px;max-width:66ch}
+
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  :focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<div id="forbar">
+  <div class="wrap">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4.5-4.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+    <span>Prepared for <strong id="forname"></strong></span>
+  </div>
+</div>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="/">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+      <g stroke="#8FD8F2" stroke-width="3.7" stroke-linecap="round" fill="none">
+        <path d="M44 4.5 v31 M30.6 12.25 L57.4 27.75 M30.6 27.75 L57.4 12.25"/>
+        <path d="M40 8.6 L44 12 L48 8.6 M40 31.4 L44 28 L48 31.4"/>
+        <path d="M33.2 16.6 L34.9 21.5 L30 22.3 M54.8 23.4 L53.1 18.5 L58 17.7"/>
+        <path d="M30 17.7 L34.9 18.5 L33.2 23.4 M58 22.3 L53.1 21.5 L54.8 16.6"/>
+      </g>
+      <path d="M16.5 20c-2.4 0-4.6 2.2-4.6 4.6 0 15.6 13.4 29 29 29 2.4 0 4.6-2.2 4.6-4.6v-5.6l-10.1-3.4-4.5 4.5c-5.6-3.4-10.1-7.9-13.5-13.5l4.5-4.5z" fill="#F4F2EC"/>
+      </svg>
+      <span>Snow<b>Calls</b></span>
+    </a>
+    <span class="sp"></span>
+    <a class="btn sm" href="#start">Book a 15-minute call</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="label">24/7 storm line for snow removal</p>
+      <h1>It starts snowing at 2am. The phone starts at 2:15.</h1>
+      <p class="lede">A property manager needs a lot bare before the doors open at seven. Somebody is buried in and has a six o'clock shift. None of them are leaving a voicemail at three in the morning — they are working down the list until a person picks up.</p>
+      <p class="lede">SnowCalls answers every one of those calls through the whole storm, asks what you would ask, and puts the address on the route while you are still in the truck with the plow down.</p>
+      <div class="cta-row">
+        <a class="btn" href="#start">Book a 15-minute call</a>
+        <a class="btn ghost" href="#how">See how it works</a>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="phone-top"><span class="dot"></span> Tuesday · 4:52 AM · inbound</div>
+      <div class="msg them"><span class="who">Caller</span><span class="bub">Hi — I manage the building on Ridge Road. We got hammered overnight and the lot hasn't been touched. We open at seven thirty and staff start pulling in before seven.</span></div>
+      <div class="msg us"><span class="who">SnowCalls</span><span class="bub">Understood, that's a tight window. I'm the automated line for <span class="co">Northside Snow Removal</span> — I'll get the details down and onto the route. Roughly how many spaces is the lot, and are there cars left in it overnight?</span></div>
+      <div class="msg them"><span class="who">Caller</span><span class="bub">About forty spaces. There should be two or three cars along the back fence.</span></div>
+      <div class="msg us"><span class="who">SnowCalls</span><span class="bub">Got it. Where do you want the snow piled, and do you want the walks and entrances salted while we're there?</span></div>
+      <div class="msg them"><span class="who">Caller</span><span class="bub">Far corner past the dumpster. Yes to salt — the front entrance especially.</span></div>
+      <div class="booked">
+        <div class="h"><span class="dot"></span> On the route · sent to the truck at 4:54 AM</div>
+        <dl>
+          <dt>Site</dt><dd>Ridge Road lot — approx. 40 spaces</dd>
+          <dt>Deadline</dt><dd>Clear and salted before 7:00 AM</dd>
+          <dt>On site</dt><dd>2–3 cars along the back fence</dd>
+          <dt>Notes</dt><dd>Pile past the dumpster · salt walks and front entrance</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <p class="label">The problem</p>
+    <h2 style="max-width:22ch">A season's worth of customers is decided on about nine nights.</h2>
+    <div class="split" style="margin-top:36px">
+      <div>
+        <p>Snow is the most compressed trade there is. The work does not trickle in — it lands on a handful of nights a winter, all at once, on everybody at the same time. Every plow contractor in the county gets the same calls in the same two hours.</p>
+        <p>And you are the one person who cannot pick up, because you are in the truck at four in the morning with the plow down and a route to finish. The call does not go unanswered because you stopped caring. It goes unanswered because you were plowing.</p>
+        <p>By the time the route is done and you get to the voicemail, it is nine in the morning, the sun is out, and somebody else plowed that lot at five. You did not lose one push. You lost the seasonal contract that came with it, and next winter's too.</p>
+      </div>
+      <div>
+        <div class="card">
+          <h3>What one missed storm costs</h3>
+          <p style="margin-top:10px">One commercial lot is a season-long agreement, not a single push. The property manager who got a real answer at five in the morning does not shop the following year, and tells the other buildings they manage.</p>
+          <p>Nobody is undercutting you at 4am. They are just picking up.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec dark" id="how">
+  <div class="wrap">
+    <p class="label">How it works</p>
+    <h2 style="max-width:22ch">Three steps. Nothing you use today gets replaced.</h2>
+    <div class="grid g3" style="margin-top:38px">
+      <div class="card">
+        <span class="n">1</span>
+        <h3>Your overflow forwards to us</h3>
+        <p>Keep your number. Calls ring you first — during a storm, or after a set number of rings, they come to SnowCalls instead of voicemail. Nothing on your phone changes.</p>
+      </div>
+      <div class="card">
+        <span class="n">2</span>
+        <h3>It asks what you'd ask</h3>
+        <p>Address, driveway or lot, rough size, when it has to be clear by, where the snow gets piled, cars left on site, salt or no salt. We write those questions with you before the first flake falls.</p>
+      </div>
+      <div class="card">
+        <span class="n">3</span>
+        <h3>The address lands on the route</h3>
+        <p>The site and its notes text through to whoever is running the route, ordered by when each one has to be clear. No new dashboard, no app to open with gloves on.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap split">
+    <div>
+      <p class="label">What's included</p>
+      <h2>Everything, from the first ring.</h2>
+      <ul class="ticks" style="margin-top:26px">
+        <li>Answered right through the storm — 3am, weekends, holidays, mid-route</li>
+        <li>Qualified with your questions, not a generic script</li>
+        <li>Contract customers recognised and flagged ahead of one-off callers</li>
+        <li>Site details and deadlines texted to whoever is running the route</li>
+        <li>Spanish-speaking callers handled on the same line</li>
+        <li>Storm surge cover — two hundred calls in two hours is the same to it as one</li>
+        <li>A summary after every storm: who called, who got served, who you had to turn down</li>
+      </ul>
+    </div>
+    <div>
+      <p class="label">What it isn't</p>
+      <h2>No chatbot on your website.</h2>
+      <p style="margin-top:22px">A chat bubble is the most visible and least useful version of this. Nobody types out a web form at 4am with a foot of snow in the driveway. They call.</p>
+      <p><strong style="color:var(--ink)">It says it's automated.</strong> On every call, in the first sentence. Pretending a machine is you works exactly once, and the moment somebody notices, you have spent the trust this was supposed to earn.</p>
+      <p><strong style="color:var(--ink)">It never quotes a price, and it never promises a time.</strong> Snow pricing depends on the site and the season, and the one thing you cannot do at 4am is promise an arrival you might miss by three hours. It gathers and it hands over.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec darker dark">
+  <div class="wrap" style="display:flex;justify-content:center">
+    <div class="price" style="background:rgba(255,255,255,.045);border-color:var(--ice-mid)">
+      <p class="label center">Terms</p>
+      <div class="amt" style="color:#fff">Flat monthly fee</div>
+      <p class="sub">No per-call charge. No setup fee. No contract.</p>
+      <ul class="ticks" style="text-align:left;max-width:400px;margin-inline:auto">
+        <li>First month is the trial. If it hasn't produced booked jobs, switch it off and owe nothing further.</li>
+        <li>You own the number, the recordings and the customer data. All of it comes with you if you leave.</li>
+        <li>Priced on call volume and how many trucks it routes for, and it can be paused out of season. Told to you before you commit, not after.</li>
+      </ul>
+      <div class="cta-row" style="justify-content:center;margin-top:28px">
+        <a class="btn" href="#start">Get a number for your volume</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap" style="max-width:820px">
+    <p class="label">Questions</p>
+    <h2>The ones everybody asks.</h2>
+    <div style="margin-top:32px">
+      <details><summary>Will my customers know it's a machine?</summary><p>Yes, because it says so in the first sentence of every call. That is deliberate. Speed is what you are selling here, not the illusion of a person. In practice callers do not mind at all — being answered at 9pm beats a voicemail box read on Monday.</p></details>
+      <details><summary>What if it can't handle the call?</summary><p>It hands off. Anything unusual, angry, or outside what we set up — a damage claim, a dispute about a contract — goes to a real person or gets flagged with the recording attached. It is built to know its edges.</p></details>
+      <details><summary>Do I have to change my phone system or software?</summary><p>No. You keep your number and however you run your routes. This sits behind the line as the overflow destination — the same slot voicemail occupies now — and it can sit idle from April to October without costing you the setup again.</p></details>
+      <details><summary>How long until it's running?</summary><p>About a week, and the time to do it is October. Most of it is the two of us writing the questions and loading your contract list, which is what decides whether the routing is any good once it actually snows.</p></details>
+      <details><summary>What happens to the recordings?</summary><p>They are yours. You get every call, every transcript, and the customer list, exported whenever you ask. Nothing about this is designed to make leaving difficult.</p></details>
+      <details><summary>How do I know it's actually working?</summary><p>We agree the number before anything is built — storm calls answered, sites routed without a human, contract customers reached first. If that number hasn't moved after the first real storm, we change it or you switch it off. I would rather lose the work than keep invoicing for something that isn't landing.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="sec dark" id="start">
+  <div class="wrap center" style="max-width:720px">
+    <p class="label">Next step</p>
+    <h2>Tell me what happens to the 4am call today.</h2>
+    <p class="lede center" style="margin-top:14px">Walk me through the last big storm — how many calls came in, how many you got to, and what happened to the rest. Fifteen minutes is usually enough to see whether this is worth doing, and I will tell you straight if it isn't.</p>
+    <div class="cta-row" style="justify-content:center">
+      <a class="btn" href="tel:+15855248976">Call 585-524-8976</a>
+    </div>
+    <p class="fnote center" style="margin-inline:auto">SnowCalls is a NYONIC product. NYONIC builds websites, apps and automation for small businesses in Western New York.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center">
+      <a class="logo" href="/" style="font-size:1rem">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><g stroke="#8FD8F2" stroke-width="3.7" stroke-linecap="round" fill="none"><path d="M44 4.5 v31 M30.6 12.25 L57.4 27.75 M30.6 27.75 L57.4 12.25"/><path d="M40 8.6 L44 12 L48 8.6 M40 31.4 L44 28 L48 31.4"/><path d="M33.2 16.6 L34.9 21.5 L30 22.3 M54.8 23.4 L53.1 18.5 L58 17.7"/><path d="M30 17.7 L34.9 18.5 L33.2 23.4 M58 22.3 L53.1 21.5 L54.8 16.6"/></g><path d="M16.5 20c-2.4 0-4.6 2.2-4.6 4.6 0 15.6 13.4 29 29 29 2.4 0 4.6-2.2 4.6-4.6v-5.6l-10.1-3.4-4.5 4.5c-5.6-3.4-10.1-7.9-13.5-13.5l4.5-4.5z" fill="#F4F2EC"/></svg>
+        <span>Snow<b>Calls</b></span>
+      </a>
+      <span class="sp" style="margin-left:auto"></span>
+      <a href="/terms.html">Terms</a>
+      <a href="/privacy.html">Privacy</a>
+    </div>
+    <p style="margin:22px 0 0">© <span id="yr">2026</span> NYONIC. Every missed call, answered.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  // Personalized banner: /?for=Some%20Snow%20Removal
+  // Written with textContent and hard-limited — never innerHTML, since this
+  // value comes straight off the URL.
+  try{
+    var raw = new URLSearchParams(location.search).get("for");
+    if(raw){
+      var name = raw.replace(/[^\w \-'&.,]/g,"").trim().slice(0,60);
+      if(name){
+        document.getElementById("forname").textContent = name;
+        document.getElementById("forbar").classList.add("on");
+        // The demo transcript names a generic company by default. When somebody
+        // arrives on a personalized link, the assistant introduces itself with
+        // their name instead — same sanitized value, same textContent rule.
+        document.querySelectorAll(".co").forEach(function (el) {
+          el.textContent = name;
+        });
+        document.title = "SnowCalls for " + name;
+      }
+    }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

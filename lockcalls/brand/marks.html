@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PestCalls mark — size and ground tests</title>
+<style>
+  :root{--ink:#0E2730;--teal:#14A3B8;--mint:#5FC5D6;--cream:#F4F2EC;--deep:#0B6E7C}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#F4F2EC;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#0E2730;padding:34px}
+  h2{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#5B7079;margin:0 0 16px;font-weight:700}
+  .row{display:flex;align-items:flex-end;gap:26px;flex-wrap:wrap;margin-bottom:34px}
+  .row .item{text-align:center}
+  .row .item span{display:block;font-size:11px;color:#7E8F94;margin-top:7px}
+  .band{background:var(--ink);padding:26px;border-radius:12px;margin-bottom:34px}
+  .band h2{color:#7E9AA3}
+  .swatches{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .sw{width:120px}
+  .sw i{display:block;height:56px;border-radius:9px;border:1px solid rgba(14,39,48,.12)}
+  .sw b{display:block;font-size:12px;margin-top:7px}
+  .sw span{display:block;font-size:11px;color:#7E8F94;font-family:ui-monospace,Menlo,Consolas,monospace}
+</style>
+</head>
+<body>
+
+<h2>The mark on cream — 128 / 64 / 32 / 24 / 16 px</h2>
+<div class="row" id="light"></div>
+
+<div class="band">
+  <h2>On evergreen — the ground it actually ships on</h2>
+  <div class="row" id="dark"></div>
+</div>
+
+<h2>Single colour — print, stamps, embroidery</h2>
+<div class="row" id="mono"></div>
+
+<h2>Palette</h2>
+<div class="swatches">
+  <div class="sw"><i style="background:#0E2730"></i><b>Ink</b><span>#0E2730</span></div>
+  <div class="sw"><i style="background:#14A3B8"></i><b>Teal — the shield</b><span>#14A3B8</span></div>
+  <div class="sw"><i style="background:#5FC5D6"></i><b>Mint — "Calls" on dark</b><span>#5FC5D6</span></div>
+  <div class="sw"><i style="background:#0B6E7C"></i><b>Deep teal — "Calls" on light</b><span>#0B6E7C</span></div>
+  <div class="sw"><i style="background:#F4F2EC"></i><b>Cream</b><span>#F4F2EC</span></div>
+  <div class="sw"><i style="background:#FF6B1A"></i><b>Safety orange — CTA only</b><span>#FF6B1A</span></div>
+</div>
+
+<script>
+const mark = (shield, handset, check) => `
+<svg viewBox="0 0 64 64" role="img" aria-label="PestCalls">
+  <path d="M44 5 L56.5 9.6 v10.6 c0 9.4-6.3 15.6-12.5 18.1 -6.2-2.5-12.5-8.7-12.5-18.1 v-10.6 z" fill="${shield}"/>
+  <path d="M38.4 20.6 l4.1 4.1 7.4-7.8" fill="none" stroke="${check}" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M16.5 20c-2.4 0-4.6 2.2-4.6 4.6 0 15.6 13.4 29 29 29 2.4 0 4.6-2.2 4.6-4.6v-5.6l-10.1-3.4-4.5 4.5c-5.6-3.4-10.1-7.9-13.5-13.5l4.5-4.5z" fill="${handset}"/>
+</svg>`;
+
+const sizes = [128, 64, 32, 24, 16];
+const build = (el, shield, handset, check) => {
+  document.getElementById(el).innerHTML = sizes.map(s =>
+    `<div class="item"><div style="width:${s}px;height:${s}px">${mark(shield,handset,check)}</div><span>${s}px</span></div>`
+  ).join("");
+};
+build("light", "#14A3B8", "#0E2730", "#F4F2EC");
+build("dark",  "#14A3B8", "#F4F2EC", "#0E2730");
+build("mono",  "#0E2730", "#0E2730", "#F4F2EC");
+</script>
+</body>
+</html>

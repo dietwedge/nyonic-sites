@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PizzaCalls brand card</title>
+<style>
+  :root{
+    --ink:#171009;      /* wood-fired dark — the oven, not the flag */
+    --green:#008C45;    /* Italian green */
+    --red:#CD212A;      /* Italian red — CTA and the slice */
+    --cream:#F4F2EC;    /* shared across the family */
+    --mint:#39B36B;     /* "Calls" in the wordmark on dark */
+    --muted:#9A8C7A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink)}
+  .card{
+    width:1120px;height:700px;background:var(--ink);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .lockup{display:flex;align-items:center;gap:22px}
+  .lockup svg{width:118px;height:118px;flex:none}
+  .word{font-size:104px;font-weight:700;letter-spacing:-.035em;line-height:1;color:var(--cream);white-space:nowrap}
+  .word b{color:var(--mint);font-weight:700}
+  /* The rule is the flag, compressed to three marks. */
+  .rule{display:flex;gap:0;margin:46px 0 34px;border-radius:2px;overflow:hidden}
+  .rule i{display:block;width:24px;height:3px}
+  .tag{font-family:Georgia,"Times New Roman",serif;font-size:40px;color:var(--cream);letter-spacing:-.01em}
+  .tag i{color:var(--mint);font-style:italic}
+  .sub{margin-top:26px;font-size:18px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600}
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="lockup">
+    <!-- Handset is the family device. The trade symbol swaps: TreeCalls sprouts a
+         leaf, PestCalls carries a shield, PizzaCalls carries a slice. -->
+    <svg viewBox="0 0 64 64" role="img" aria-label="PizzaCalls">
+      <!-- slice: apex low-left, crust bulging up-right -->
+      <path d="M45 39.5 L31.5 12 Q45 5.4 58.5 12 Z" fill="#CD212A"/>
+      <!-- crust -->
+      <path d="M31.5 12 Q45 5.4 58.5 12" fill="none" stroke="#F4F2EC"
+            stroke-width="5.2" stroke-linecap="round"/>
+      <!-- two pepperoni, enough to read as pizza and not enough to mush at 16px -->
+      <circle cx="41" cy="18.5" r="2.7" fill="#F4F2EC"/>
+      <circle cx="49.5" cy="21.5" r="2.4" fill="#F4F2EC"/>
+      <!-- handset -->
+      <path d="M16.5 20c-2.4 0-4.6 2.2-4.6 4.6 0 15.6 13.4 29 29 29 2.4 0 4.6-2.2 4.6-4.6v-5.6l-10.1-3.4-4.5 4.5c-5.6-3.4-10.1-7.9-13.5-13.5l4.5-4.5z"
+            fill="#F4F2EC"/>
+    </svg>
+    <div class="word">Pizza<b>Calls</b></div>
+  </div>
+
+  <div class="rule">
+    <i style="background:#008C45"></i><i style="background:#F4F2EC"></i><i style="background:#CD212A"></i>
+  </div>
+  <div class="tag">Every missed call, <i>answered.</i></div>
+  <div class="sub">24/7 Order Rescue for Pizzerias</div>
+
+</div>
+</body>
+</html>

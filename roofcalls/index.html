@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RoofCalls — Every missed call, answered | NYONIC</title>
+<meta name="description" content="24/7 call answering and booking for a roofing company. Every after-hours call answered, qualified, and booked before the caller dials the next company.">
+<meta name="theme-color" content="#22282E">
+<meta property="og:title" content="RoofCalls — Every missed call, answered">
+<meta property="og:description" content="Storm calls all arrive at once. RoofCalls answers every one of them.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%3E%3Crect%20width%3D'64'%20height%3D'64'%20rx%3D'14'%20fill%3D'%2322282E'%2F%3E%3Cg%20transform%3D'translate(32%2C32)%20scale(.78)%20translate(-32%2C-32)'%3E%3Cpath%20d%3D'M44%206%2058%2021v6L44%2014%2030%2027v-6z'%20fill%3D'%23C0563C'%2F%3E%3Cpath%20d%3D'M16.5%2020c-2.4%200-4.6%202.2-4.6%204.6%200%2015.6%2013.4%2029%2029%2029%202.4%200%204.6-2.2%204.6-4.6v-5.6l-10.1-3.4-4.5%204.5c-5.6-3.4-10.1-7.9-13.5-13.5l4.5-4.5z'%20fill%3D'%23F4F2EC'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<style>
+  :root{
+    --ink:#22282E; --ink-2:#171C21; --accent:#C0563C; --pale:#F2D6CC;
+    --cream:#F4F2EC; --cream-2:#EAE7DF;
+    --body:#33454C; --muted:#7C8D94;
+    --line:rgba(255,255,255,.14); --line-dark:rgba(20,30,36,.14);
+    --maxw:1120px; --r:14px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--cream);color:var(--body);
+    font:400 17px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  h1,h2,h3{color:var(--ink);margin:0 0 .5em;letter-spacing:-.022em;line-height:1.1;font-weight:700}
+  h1{font-size:clamp(2.3rem,6.2vw,4.1rem)}
+  h2{font-size:clamp(1.75rem,3.7vw,2.65rem)}
+  h3{font-size:1.12rem;line-height:1.35}
+  p{margin:0 0 1.1em}
+  a{color:inherit}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+  .dark{background:var(--ink);color:var(--pale)}
+  .dark h1,.dark h2,.dark h3{color:var(--cream)}
+  section{padding:78px 0}
+  .lede{font-size:1.16rem;max-width:62ch}
+  .btn{display:inline-block;background:var(--accent);color:var(--ink);font-weight:700;
+    text-decoration:none;padding:15px 26px;border-radius:var(--r);border:0}
+  .btn:hover{filter:brightness(1.06)}
+  .btn.ghost{background:transparent;color:var(--cream);border:1px solid var(--line)}
+  .row{display:flex;gap:14px;flex-wrap:wrap;margin-top:26px}
+  .grid{display:grid;gap:20px}
+  @media(min-width:760px){.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}}
+  .card{background:#fff;border:1px solid var(--line-dark);border-radius:var(--r);padding:26px}
+  .dark .card{background:var(--ink-2);border-color:var(--line)}
+  .num{font:700 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent);
+    letter-spacing:.14em;margin-bottom:10px}
+  /* The 22px offsets the list against the heading beside it. Once the split
+     stacks, that offset lands on top of the grid gap and reads as a hole. */
+  .qs{list-style:none;margin:22px 0 0;padding:0;max-width:70ch}
+  @media(max-width:859px){.qs{margin-top:2px}}
+  .qs li{padding:14px 0;border-top:1px solid var(--line);display:flex;gap:14px;align-items:flex-start}
+  .qs li::before{content:"";flex:none;width:9px;height:9px;margin-top:9px;border-radius:2px;background:var(--accent)}
+  /* Sticky, with the CTA in it. A prospect who scrolls to the pricing and
+     decides has to be able to act without scrolling back. */
+  header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--ink) 94%,transparent);
+    backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid var(--line)}
+  .bar{display:flex;align-items:center;gap:14px;height:66px}
+  .bar .sp{margin-left:auto}
+  .word{font-weight:700;font-size:20px;letter-spacing:-.02em;color:var(--cream)}
+  .word b{color:var(--accent)}
+  .btn.sm{padding:10px 17px;font-size:.9rem;white-space:nowrap}
+  /* On a phone the full label wraps to two lines and bursts the 66px bar.
+     Same button, shorter words — not a hidden CTA. */
+  .narrow{display:none}
+  @media(max-width:560px){
+    .wide{display:none}
+    .narrow{display:inline}
+    .word{font-size:17px}
+    .btn.sm{padding:9px 14px;font-size:.85rem}
+  }
+  .eyebrow{font:700 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+
+  .split{display:grid;gap:clamp(28px,4.5vw,56px);align-items:start}
+  @media(min-width:860px){.split{grid-template-columns:1fr 1fr}}
+  /* A section whose content is narrower than the wrap must narrow the WRAP,
+     not sit a short column inside a wide one — otherwise every pixel of the
+     slack piles up on the right and the section reads as broken. */
+  /* Personalised banner: hidden until a ?for= link fills it in. */
+  #forbar{display:none;background:var(--accent);color:var(--ink)}
+  #forbar.on{display:block}
+  #forbar .wrap{padding-block:11px;font-size:.94rem;font-weight:600;display:flex;
+    gap:10px;align-items:center;justify-content:center;text-align:center;flex-wrap:wrap}
+  #forbar svg{width:17px;height:17px;flex:none}
+  .center{text-align:center;margin-inline:auto}
+  .center .row{justify-content:center}
+  .narrow-wrap{max-width:820px}
+
+  ul.ticks{list-style:none;padding:0;margin:26px 0 0;max-width:70ch}
+  ul.ticks li{position:relative;padding-left:31px;margin-bottom:13px}
+  ul.ticks li:last-child{margin-bottom:0}
+  ul.ticks li::before{content:"";position:absolute;left:0;top:.42em;width:17px;height:9px;
+    border-left:2.5px solid var(--accent);border-bottom:2.5px solid var(--accent);
+    transform:rotate(-45deg)}
+
+  /* Native accordion: six answers is too much standing copy, and <details>
+     needs no script to open. */
+  details{border-top:1px solid var(--line-dark);padding:19px 0}
+  details:last-of-type{border-bottom:1px solid var(--line-dark)}
+  summary{cursor:pointer;font-weight:700;color:var(--ink);list-style:none;
+    display:flex;gap:14px;align-items:flex-start;font-size:1.04rem}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";margin-left:auto;color:var(--accent);font-size:1.5rem;line-height:1;flex:none}
+  details[open] summary::after{content:"\2013"}
+  details p{margin:13px 0 0;max-width:68ch}
+
+  .price{background:#fff;border:2px solid var(--ink);border-radius:var(--r);
+    padding:clamp(28px,4vw,42px);text-align:left;max-width:620px;margin-inline:auto}
+  .price .amt{font-size:clamp(2rem,4.6vw,2.8rem);font-weight:700;color:var(--ink);
+    letter-spacing:-.03em;line-height:1;margin-bottom:6px}
+  .price .sub{color:var(--muted);font-size:.96rem;margin-bottom:22px}
+
+  footer{background:var(--ink-2);color:var(--muted);padding:44px 0;font-size:.92rem}
+  footer a{color:var(--accent)}
+  .fnote{max-width:66ch;margin:0 0 20px}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  /* The transcript. This is the part that sells: it shows the call rather
+     than describing it, and the summary card is what the client wakes up to. */
+  .hero{display:grid;gap:clamp(30px,5vw,64px);align-items:start}
+  @media(min-width:960px){.hero{grid-template-columns:1fr 1fr}}
+  .phone{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--r);
+    padding:22px;box-shadow:0 22px 50px -22px rgba(0,0,0,.7)}
+  .phone-top{display:flex;align-items:center;gap:9px;padding-bottom:14px;margin-bottom:16px;
+    border-bottom:1px solid var(--line);font-size:.79rem;color:var(--muted);
+    letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none}
+  .msg{margin-bottom:13px;max-width:88%;font-size:.94rem;line-height:1.5}
+  .msg .who{display:block;font-size:.7rem;letter-spacing:.11em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:4px;font-weight:700}
+  .msg .bub{display:block;padding:11px 14px;border-radius:11px}
+  .msg.them .bub{background:rgba(255,255,255,.07);color:#DCE7EB;border-top-left-radius:3px}
+  .msg.us{margin-left:auto}
+  .msg.us .who{text-align:right;color:var(--accent)}
+  .msg.us .bub{background:var(--accent);color:var(--ink);border-top-right-radius:3px;font-weight:500}
+  .booked{margin-top:18px;padding:15px;border-radius:11px;
+    background:color-mix(in srgb, var(--accent) 12%, transparent);
+    border:1px solid color-mix(in srgb, var(--accent) 40%, transparent)}
+  .booked .h{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);
+    font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .booked dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:5px 14px;font-size:.9rem}
+  .booked dt{color:var(--muted);font-weight:600}
+  .booked dd{margin:0;color:var(--cream)}
+</style>
+</head>
+<body>
+
+<div id="forbar">
+  <div class="wrap">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2 2 4.5-4.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+    <span>Prepared for <strong id="forname"></strong></span>
+  </div>
+</div>
+
+<div class="dark">
+  <header>
+    <div class="wrap bar">
+      <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true"><path d="M44 6 58 21v6L44 14 30 27v-6z" fill="#C0563C"/><path d="M16.5 20c-2.4 0-4.6 2.2-4.6 4.6 0 15.6 13.4 29 29 29 2.4 0 4.6-2.2 4.6-4.6v-5.6l-10.1-3.4-4.5 4.5c-5.6-3.4-10.1-7.9-13.5-13.5l4.5-4.5z" fill="#F4F2EC"/></svg>
+      <span class="word">Roof<b>Calls</b></span>
+      <span class="sp"></span>
+      <a class="btn sm" href="#talk"><span class="wide">Book a 15-minute call</span><span class="narrow">Book a call</span></a>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap hero">
+      <div>
+        <p class="eyebrow">Storm and leak call answering for roofers</p>
+        <h1>The storm ends and every phone in town rings at once.</h1>
+        <p class="lede">Wind comes through overnight and by morning half the county needs a roofer. The ones who booked are the ones who answered while it was still raining.</p>
+        <p class="lede">RoofCalls answers every one of those calls, around the clock, asks what you would ask, and books the job before you have picked up the phone.</p>
+        <div class="row">
+          <a class="btn" href="#talk">Book a 15-minute call</a>
+          <a class="btn ghost" href="#how">See how it works</a>
+        </div>
+      </div>
+      <div class="phone">
+      <div class="phone-top"><span class="dot"></span> Wednesday · 5:52 AM · inbound</div>
+      <div class="msg them"><span class="who">Caller</span><span class="bub">The wind last night took shingles off and there's a stain spreading on the bedroom ceiling.</span></div>
+      <div class="msg us"><span class="who">RoofCalls</span><span class="bub">I'm the automated line for <span class="co">Northside Roofing</span>. Is water coming in right now, and is the ceiling sagging or bulging anywhere?</span></div>
+      <div class="msg them"><span class="who">Caller</span><span class="bub">Dripping slowly. It's flat, not bulging.</span></div>
+      <div class="msg us"><span class="who">RoofCalls</span><span class="bub">Get something under it and keep out from directly beneath. Do you know roughly how old the roof is?</span></div>
+      <div class="msg them"><span class="who">Caller</span><span class="bub">About eighteen years. We're going to file on insurance.</span></div>
+      <div class="booked">
+        <div class="h"><span class="dot"></span> Booked · sent to the crew lead at 5:56 AM</div>
+        <dl>
+          <dt>Job</dt><dd>Storm damage — active drip, bedroom ceiling</dd>
+          <dt>Roof</dt><dd>Asphalt shingle · approx. 18 years</dd>
+          <dt>Insurance</dt><dd>Claim intended, no adjuster yet</dd>
+          <dt>When</dt><dd>Today — tarp and assess</dd>
+        </dl>
+      </div>
+    </div>
+    </div>
+  </section>
+</div>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">The problem</p>
+    <h2 style="max-width:20ch">Storm week is a year of leads in three days.</h2>
+    <div class="split" style="margin-top:36px">
+      <div>
+        <p>Roofing runs on weather. A line of storms goes through on a Friday night, and by Saturday morning every roofer in the county is getting the same calls from the same three streets.</p>
+        <p>You are on a roof, up a ladder, or driving between estimates — none of which is a place to answer a phone. The call does not go unanswered because you stopped caring. It goes unanswered because you were on a roof.</p>
+        <p>The homeowner with water coming into a bedroom calls until somebody picks up. Whoever that is gets the tarp, the insurance job, and the full replacement behind it.</p>
+      </div>
+      <div>
+        <div class="card">
+          <h3>What one missed storm weekend costs</h3>
+          <p style="margin-top:10px">An emergency tarp is a few hundred dollars. The claim behind it is a full replacement, and the neighbours who watched the truck pull up call the same number.</p>
+          <p style="margin:0">You are not being outsold. You are being out-answered.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" style="background:var(--cream-2)">
+  <div class="wrap">
+    <p class="eyebrow">How it works</p>
+    <h2 style="max-width:22ch">Three steps. Nothing you use today gets replaced.</h2>
+    <div class="grid g3" style="margin-top:34px">
+      <div class="card"><div class="num">01</div><h3>Forward your line</h3><p style="margin:0">Keep your number. Point it at us after hours, at weekends, or all the time — your choice, changed whenever you like.</p></div>
+      <div class="card"><div class="num">02</div><h3>It answers and asks</h3><p style="margin:0">Every call picked up on the first ring. No hold, no queue, no matter how many come at once.</p></div>
+      <div class="card"><div class="num">03</div><h3>You get the job</h3><p style="margin:0">Qualified, booked, and sent to you with the details. You wake up to work, not to voicemails.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="dark">
+  <section>
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">It asks what you would ask</p>
+        <h2>Every call, the same questions you would ask.</h2>
+        <p class="lede">Separates an active leak from a replacement quote in the first question. These are the questions it actually works through — not a summary of them.</p>
+      </div>
+      <ul class="qs">
+        <li><span>Whether water is coming in right now, and into what room</span></li>
+        <li><span>Tell them to move what they can and get something under it</span></li>
+        <li><span>Whether the ceiling is sagging or bulging</span></li>
+        <li><span>What the weather did — wind, hail, ice, or a limb down</span></li>
+        <li><span>Roof age, and whether it has been replaced or repaired before</span></li>
+        <li><span>Roof type: asphalt shingle, metal, flat or low-slope, tile</span></li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<section>
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow">What's included</p>
+      <h2>Everything, from the first ring.</h2>
+      <ul class="ticks">
+        <li>Storm surge cover — a hundred calls in a morning is the same to it as one</li>
+        <li>Qualified with your questions, not a generic script</li>
+        <li>Booked into a real schedule your own calendar subscribes to — Google, Outlook, Apple</li>
+        <li>Job details texted to whoever is on call</li>
+        <li>Handed to a person the moment it hits its edge, with notes from the call</li>
+        <li>A weekly summary of what came in and what got booked</li>
+        <li>Your number, your recordings, your customer data — exported whenever you ask</li>
+      </ul>
+    </div>
+    <div>
+      <p class="eyebrow">What it isn't</p>
+      <h2>No chatbot on your website.</h2>
+      <p style="margin-top:22px">A chat bubble is the most visible and least useful version of this. Somebody with a real problem at nine at night is not typing at you. They are calling.</p>
+      <p><strong style="color:var(--ink)">It says it's automated.</strong> On every call, in the first sentence. Pretending a machine is you works exactly once, and the moment somebody notices you have spent the trust this was supposed to earn.</p>
+      <p><strong style="color:var(--ink)">It never quotes a price.</strong> It gathers, it books, and it hands over. Anything that commits you to a number or a promise routes to a human first.</p>
+    </div>
+  </div>
+</section>
+
+<div class="dark">
+  <section>
+    <div class="wrap">
+      <div class="price" style="background:var(--ink-2);border-color:var(--accent)">
+        <p class="eyebrow">Terms</p>
+        <div class="amt" style="color:var(--cream)">Flat monthly fee</div>
+        <p class="sub">No per-call charge. No setup fee. No contract.</p>
+        <ul class="ticks" style="margin-top:0">
+          <li>First month is the trial. If it hasn't produced booked jobs, switch it off and owe nothing further.</li>
+          <li>You own the number, the recordings and the customer data. All of it comes with you if you leave.</li>
+          <li>Priced on call volume and how many crews it books for. Told to you before you commit, not after.</li>
+        </ul>
+        <div class="row"><a class="btn" href="#talk">Get a number for your volume</a></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section style="background:var(--cream-2)">
+  <div class="wrap narrow-wrap">
+    <p class="eyebrow">Questions</p>
+    <h2>The ones everybody asks.</h2>
+    <div style="margin-top:30px">
+      <details><summary>Will my customers know it's a machine?</summary><p>Yes, and it tells them — it says it is the automated line in its first sentence, on every call. It sounds like a calm person who is good at their job, and it does not need to pretend. The caller wanted somebody to pick up.</p></details>
+      <details><summary>What if it can't handle the call?</summary><p>It says so and gets you. An emergency, a complaint, or a price it should not guess is handed to a person along with notes from the call. Handing off well is a success, not a failure.</p></details>
+      <details><summary>Do I have to change my phone system or software?</summary><p>No. Keep your number and point your overflow at us — after hours, at weekends, or after a set number of rings. Nothing on your phone changes and there is no new app to remember to open.</p></details>
+      <details><summary>How long until it's running?</summary><p>About a week, and most of that is writing your questions with you. The answering itself works on day one.</p></details>
+      <details><summary>What happens to the recordings?</summary><p>Recording is off unless you switch it on, and when it is on the notice plays before the greeting rather than after it. Recordings are yours, they are never sent to a customer, and you can delete them.</p></details>
+      <details><summary>How do I know it's actually working?</summary><p>A summary text every week: what came in, what got booked, what needed you. Every call is logged with what it asked and what it did, and you can export the lot whenever you want.</p></details>
+    </div>
+  </div>
+</section>
+
+<div class="dark" id="talk">
+  <section>
+    <div class="wrap center" style="max-width:720px">
+      <p class="eyebrow">Next step</p>
+      <h2>Tell me what happens to a storm call today.</h2>
+      <p class="lede center" style="margin-top:14px">Walk me through the last big storm — how many calls came in, how many you got to, and what happened to the rest. Fifteen minutes is usually enough to see whether this is worth doing, and I will tell you straight if it isn't.</p>
+      <div class="row">
+        <a class="btn" href="tel:+15855248976">Call 585-524-8976</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p class="fnote"><strong style="color:var(--cream)">RoofCalls</strong> is a NYONIC product, built on CallDeck. NYONIC builds websites, apps and automation for small businesses in Western New York.</p>
+    <p style="margin:0"><a href="/terms.html">Terms</a> &nbsp;&middot;&nbsp; <a href="/privacy.html">Privacy</a></p>
+    <p style="margin:22px 0 0">&copy; <span id="yr">2026</span> NYONIC. Every missed call, answered.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  // Personalised link, for a salesperson sending one prospect one URL:
+  //   https://roofcalls.com/?for=Some%20Company
+  //
+  // This value comes straight off the URL, so it is stripped to a safe
+  // character set, length-capped, and written with textContent — NEVER
+  // innerHTML. A prospect's page must not be a place to hand somebody a
+  // crafted link that renders markup.
+  try{
+    var raw = new URLSearchParams(location.search).get("for");
+    if(raw){
+      var who = raw.replace(/[^\w \-'&.,]/g,"").trim().slice(0,60);
+      if(who){
+        document.getElementById("forname").textContent = who;
+        document.getElementById("forbar").classList.add("on");
+        // The sample transcript names a stand-in company by default. On a
+        // personalised link the assistant introduces itself with the
+        // prospect's own name — same sanitised value, same textContent rule.
+        document.querySelectorAll(".co").forEach(function(el){
+          el.textContent = who;
+        });
+        document.title = "RoofCalls" + " for " + who;
+      }
+    }
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>
