@@ -1,0 +1,4 @@
+# jasonberardi.netlify.app now lives at jasonberardi.dietwedge.com (moved 14 Oct 2026).
+# This folder is the WHOLE Netlify deploy: one rule, every path, permanent.
+# The ! forces it even if a file of that name existed.
+/*  https://jasonberardi.dietwedge.com/:splat  301!
