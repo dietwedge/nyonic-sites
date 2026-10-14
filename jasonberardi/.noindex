@@ -1,0 +1,2 @@
+Presence of this file makes vps/render-caddyfile.sh send
+X-Robots-Tag: noindex, nofollow for every response from this site.
