@@ -1,0 +1,6 @@
+# Publish this folder as-is: no build, nothing but _redirects.
+# Pinned here so a publish directory left over in the Netlify UI cannot
+# send an old or empty folder live instead.
+[build]
+  publish = "."
+  command = ""

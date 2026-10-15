@@ -4,3 +4,6 @@
 Thumbs.db
 .claude-flow/
 __pycache__/
+
+# Netlify CLI link state (written by deploys); never commit.
+.netlify/
